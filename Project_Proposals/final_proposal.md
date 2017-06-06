@@ -1,0 +1,10 @@
+1.
+I will be using the Ride Austin dataset to create a model that predicts where a driver should situate themselves to maximize their earnings while driving. My goal is to use the information I have on a given driver (avg. rating, location, vehicle, current time, etc) and allow them to choose their optimal spot based on a given distance from their current location. So let's say a driver wants to find the best spot but doesn't want to drive all the way downtown, he or she can choose '4 miles from my current location', and the model will tell him or her where they are most likely to see the biggest returns. This should also help keep drivers from congregating in the same place.
+2.
+The idea is to help the drivers of Ride Austin situate themselves in the best location possible to earn them the most money. Ride Austin will be seeing more competition soon, with Uber and Lyft attempting to re-enter the market in Austin. In order to compete, they'll need to retain drivers, and giving drivers a service like this will help keep them from migrating over to other services.
+3.
+Visualizations will consist of a map that interactively zooms in on suggested locations based on a given input from a driver. The presentation will consist of using Tableau (with their TabPy beta, if possible) to demonstrate this in action. Ideally, this sort of model could be integrated into their mobile app. But a mobile app developer I am not, so that will need to be at the end of my presentation in the 'where to go from here' slide.
+4.
+I've already been given the entire SQL database straight from the source! (thank you Ryan). I'll be using that, sorry I can't provide a link to it but if you have questions about it, come and find me and I'll show you what I've got.
+5.
+The next part is filtering through the data to get the elements I need to use the model. There's a lot of data there, and I'm still a little uncertain of which parts will be more important than others. From there, I need to build a minimum viable product to get one successful suggestion from a hypothetical driver. That could take a while. 
