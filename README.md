@@ -111,7 +111,7 @@ Via hypothesis test, I can conclude that on average, my model predicts hotspots 
 
 One bit of information I could use to improve this model is weather data, like % chance of percipitation or temperature. Anyone who has ever tried to get a cab in New York City while it's raining knows that demand skyrockets and all the cabs are taken. Likewise, I'd also like to know more about incoming flights at the airport. If I can predict a certain number of flights coming in at the same time, I may suggest the airport is a better spot than usual.
 
-As I mentioned earlier, a company in Japan was able to use a mobile user's real-time geolocation data to predict when and where they would ask for a ride. Some taxi drivers saw increases of 20% in business after using the model. While I don't have that kind of data, If I did you can bet I would use it.
+As I mentioned earlier, a company in Japan was able to use a mobile user's real-time geolocation data to predict when and where they would ask for a ride. Some taxi drivers saw increases of 20% in business after using the model. While I don't have that kind of data, if I did you can bet I would use it.
 
 Something else I never got to try was weighting the unfulfilled rides more. If I care more about taking care of unfulfilled requests, then my hotspots should favor those.
 
