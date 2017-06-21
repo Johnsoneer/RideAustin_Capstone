@@ -25,55 +25,63 @@ What that told me was that there was a disconnect between rider and driver. Here
 
 The purpose of my project is to try to bridge that gap. If I can successfully predict what areas in Austin are likely to have high demand, I can tell drivers about those spots and increase the supply to meet that demand. Predicting where these hotspots are going to be means taking in the historical information about when and where ride requests happen and using them to predict where the ride requests are likely to happen next.
 
-#Choosing a Model
+# Choosing a Model
+
 
 At first I considered breaking the whole of Austin into a grid and capturing information about each grid point to predict which one is going to have the highest demand. I read about some other similar projects doing this with some success in areas like Japan where a cell service company was able to predict ride requests within 500 square feet. What they had that I don't is real-time geolocation of users.
 
 While the grid-mapping method may make it easier for a model like an ensemble classifier to predict the area with the highest demand, what it also does is decorrelate areas from each other. If I have Downtown blocked off into a grid of 4 areas, then a classifier would assume each class is independent of each other when I know that all four of those areas are highly correlated with each other. More over, I wanted to capture the variability of these areas of demand continuously to see how they may change in certain circumstances. So I instead decided to plot hotspots using a K-Means classifier.
 
-#K-Means Clustering
+# K-Means Clustering
+
 ![step_6_calculate_hotspots](https://user-images.githubusercontent.com/24977834/27398701-367099f0-5680-11e7-9c08-c1c9af710dd9.png)
 
 This is an unsupervised machine-learning algorithm that separates a dataset into a certain number (k) of clusters. If I can find the center of those clusters, known as the centroid, then those could be good hotspots to suggest to my drivers. The trick is getting the right number of clusters down. I found that 5 clusters makes the most sense for Austin's ride request data, given the neighborhoods and historical ride demand.
 
 These hotspots are returned as pairs of Latitude and Longitude coordinates. The trouble with running these kinds of pairs into a regressor is that if I were to predict a certain latitude, how do I know which longitude makes sense to pair it with? Moreover, regressors are designed to predict values with the highest accuracy to out-of sample data, but do I really care about what order my predictions are returned in? No. All I care about is that my predicted hotspots make sense with where the demand is actually going to be. I want to send my drivers to the right spots, not necessarily to the right spots in a particular order.
 
-#My Model
+# My Model
 
 In the end, I created an algorithm that would use historical data in order to predict likely ride-requests, then run a k-means clustering algorithm on those rides to find where the hotspots are going to be. Breaking it down into six steps, the model works like this:
 
-#Step 1: Find a ride request
+# Step 1: Find a ride request
+
 ![step_1_pick_ride](https://user-images.githubusercontent.com/24977834/27398930-df690f74-5680-11e7-9f39-d491768f8439.png)
 
 Let's look at just one ride. I've got information about it, like it's lat-long location, the time of day, the day of the week, and the date and so on. If I go back into my dataset, looking at all the ride-requests that came before this one, I can then find requests that are *similar* to that ride request.
 
-#Step 2: Find Similar Requests
+# Step 2: Find Similar Requests
+
 ![step_2_find_similar](https://user-images.githubusercontent.com/24977834/27399031-25787b62-5681-11e7-85a2-e1a719cacad7.png)
 
 The green dots are all similar rides that happened around the same spot, same time of day, and the same day of the week. Each of these rides had at least one ride request to come *after* it. My thought was that those following rides would follow a historical pattern of where rides were likely to prop up next in similar conditions. So let's find the requests that came after all these green ones.
 
-#Step 3: Find the Following Rides
+# Step 3: Find the Following Rides
+
 ![step_3_find_potential_followups](https://user-images.githubusercontent.com/24977834/27399152-77ddf562-5681-11e7-8bc2-26dfef117fce.png)
 
 These green dots are all rides that came after the similar ride requests to my original blue one, down in the bottom left corner. As you can see, most of them occur Downtown, the bar scene south of the river, the mall, or the airport. This being 10:00pm on a Thursday night, that makes sense.
 
 So let's now randomly sample from this distribution of requests and choose that to be our next expected ride request. This is sort-of hijacking the Central Limit Theorem in statistics that tells us the more observations we take, the more normal our distribution should be and the more towards the true-mean our observed mean should be. In this case, we have most of our rides downtown, but a good amount elsewhere. An independent random sample of this distribution should reflect the same variation of the ride requests that would follow in reality.
 
-#Step 4: Randomly sample
+# Step 4: Randomly sample
+
 ![step_4_random_sample](https://user-images.githubusercontent.com/24977834/27399256-c6834032-5681-11e7-8e79-1c4ee366fbfe.png)
 
 See that new blue dot? That is our first *expected* request. It's highly unlikely that the next actual ride request is going to be in that exact spot, but that's now what we're after. We want to know what the general distribution of rides is likely to look like, so we can get a good idea of what areas might see more demand in the coming 30 minutes.
 
 So we repeat the process, finding similar ride requests and their follow ups and plotting the distribution of those, we can see they again favor down town but also spread out a little.
 
-#Step 5: Repeat
+# Step 5: Repeat
+
 ![step_5_repeat_n_times](https://user-images.githubusercontent.com/24977834/27399363-1f94006c-5682-11e7-91d7-691603aef182.png)
 
 If we were to repeat this process enough times, we now have a distribution of what we expect our rides to look like for the next 30 minutes. How did we decide how many to pick? I used a regression model called a Random Forest to predict how many rides we should expect to see for the whole of Austin in the next 30 minutes. That number, we'll call *n*, is how many times we repeat this process. If we repeated the same amount every time, then our expected hotspot for any given time period would generally be the average hotspot for that time block. While that might be ok to do, I'm more interested in capturing the variation on any given day.
 
 So now that we've got an idea of how we expect the demand to look in the next half our, let's run our K-Means clustering algorithm on it.
 
-#Step 6: Cluster
+# Step 6: Cluster
+
 ![step_6_calculate_hotspots](https://user-images.githubusercontent.com/24977834/27399727-618db57a-5683-11e7-855b-384805e2d14f.png)
 Now we've got our hotspots!
 
@@ -142,4 +150,4 @@ Double checking this, we look at the expected demand for that area, and we can s
 
 A huge thank you to the folks at Ride Austin for allowing me to use their dataset for this project. Also, big thanks to Tableau for giving me a student license to learn how to use their software to build this awesome interactive app you see above.
 
-If I could, I would go into greater detail in the ways I mentioned earlier with this project. Providing the drivers with this kind of information allows THEM to be the ones making decisions on where to go. They want to give people rides! What my model does is help them find where they are and where they might be next. 
+If I could, I would go into greater detail in the ways I mentioned earlier with this project. Providing the drivers with this kind of information allows THEM to be the ones making decisions on where to go. They want to give people rides! What my model does is help them find where they are and where they might be next.
