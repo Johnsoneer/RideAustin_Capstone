@@ -25,6 +25,10 @@ What that told me was that there was a disconnect between rider and driver. Here
 
 The purpose of my project is to try to bridge that gap. If I can successfully predict what areas in Austin are likely to have high demand, I can tell drivers about those spots and increase the supply to meet that demand. Predicting where these hotspots are going to be means taking in the historical information about when and where ride requests happen and using them to predict where the ride requests are likely to happen next.
 
+# Dataset
+
+A huge thank you to the people over at RideAustin for allowing me to use their data for this project! RideAustin is a non-profit ride-sharing service that not only has great drivers and prices, but also allows you round-up your fare to donate the proceeds to a local charity. They boast more than 2 million rides, the details of which I will be using to train my model.
+
 # Choosing a Model
 
 
