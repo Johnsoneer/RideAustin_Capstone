@@ -4,6 +4,7 @@
 ![app_gif_4_bigger](https://user-images.githubusercontent.com/24977834/27398106-5409cdc6-567e-11e7-886b-df224e8d6e4e.gif)
 
 
+Link to Presentation: https://www.facebook.com/galvanizeaustin/videos/1902118633362444/?hc_ref=OTHER&pnref=story
 
 My Capstone project in which I use the RideAustin ride-request database to predict where drivers should place themselves to maximize ridership and minimize unfulfilled requests.
 
