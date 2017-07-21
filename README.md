@@ -10,7 +10,7 @@ My Capstone project in which I use the RideAustin ride-request database to predi
 
 # The story
 
-On April 13th of 2013, I went to a concert. Specifically here, in Downtown Austin Texas.
+On April 13th of 2017, I went to a concert. Specifically here, in Downtown Austin Texas.
 
 ![concert_spot](https://user-images.githubusercontent.com/24977834/27397925-9a48f362-567d-11e7-9b96-76da625680ee.png)
 
