@@ -1,9 +1,7 @@
 import pandas as pd
 import numpy as np
-# import mysql.connector as msc
 import datetime as dt
 from collections import Counter
-# from bokeh.io import output_file, show, output_notebook
 from bokeh.models import (
    GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool
  )
@@ -14,26 +12,29 @@ from geopy.distance import vincenty
 from sklearn.cross_validation import train_test_split
 
 
-#blueprint for building the dataframe using a SQL query.
-
-
-# engine = msc.connect(user='root', password=<ROOT-PASSWORD>,
-#                               host='127.0.0.1',
-#                               database='rideaustin')
-# df = pd.read_sql(
-#     'SELECT start_location_lat,start_location_long, created_date,tod \
-#     FROM rides  \
-#     WHERE status = "NO_AVAILABLE_DRIVER" \
-#     OR status = "Completed";', engine)
-
-
-#now pass that dataframe into the class HotspotPredictor
 
 class HotspotPredictor(object):
-
+    '''
+    Predictive Model object used to predict areas of increased demand for a ride-sharing mobile app. 
+    
+    Args:
+      - df(obj): pandas dataframe as input data
+    methods:
+      - create_centroids()
+      - plot_hotspots()
+      - find_similar_pairs()
+      - prep_df()
+      - predict_rides()
+      - create_random_tests()
+    
+    '''
     def __init__(self,df):
         #initialize dataframe
-        self.df = df
+        
+      
+      
+      
+      df = df
         #clean out data outside Austin, TX using Pandas (could also do this in initial SQL query)
         self.df['day_of_week'] = self.df['created_date'].dt.weekday
         self.df = self.df[(self.df['start_location_lat'] >= 30.190833) & (self.df['start_location_lat'] <= 30.404041)]
@@ -375,6 +376,6 @@ class HotspotPredictor(object):
             print 'completed error! %s' %(error)
         return errors
 
-# engine = msc.connect(user='root', password='asdfghjkl;',
-#                               host='127.0.0.1',
-#                               database='rideaustin')
+engine = msc.connect(user='root', password = os.environ['MYSQL_PWD'],
+                              host='127.0.0.1',
+                              database='rideaustin')
